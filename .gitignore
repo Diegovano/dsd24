@@ -88,3 +88,4 @@ task6/first_nios2_system/**
 
 
 **/__pycache__
+**/venv/*
