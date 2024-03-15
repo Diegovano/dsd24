@@ -15,9 +15,6 @@ module tb ();
 	logic [23:0] res_fx;
 
 	accelerator_top the_accel(
-		.clk(clk),
-		.clk_en(clk_en),
-		.reset(reset),
 		// .x_fx(in_fx),
 		.x_ft(in_ft),
 		.y_fx(res_fx),
@@ -26,8 +23,8 @@ module tb ();
 
 	// ---- If a clock is required, see below ----
 	// //Create a 50MHz clock
-	always
-	 	#5 clk = ~clk;
+//	always
+//	 	#5 clk = ~clk;
 	// -----------------------
 
 	//Initial Block
@@ -37,11 +34,13 @@ module tb ();
 		
 		// intialise/set input
 		clk = 1'b0;
-		reset = 1'b0;
+		reset = 1'b1;
 		clk_en = 1'b0;
 		#5 
+		reset = 1'b0;
+		clk_en = 1'b1;		
 		// If using a clock
-		// @(posedge clk); 
+//		@(posedge clk); 
 		
 		// Wait 10 cycles (corresponds to timescale at the top) 
 		// #10
@@ -50,12 +49,7 @@ module tb ();
 
 		#10
 
-		// reset = 1'b0;
 		in_ft = $shortrealtobits(0.75);
-
-		#5
-
-		clk_en = 1'b1;
 
 		#10
 
