@@ -43,13 +43,19 @@ module tb ();
 //		@(posedge clk); 
 		
 		// Wait 10 cycles (corresponds to timescale at the top) 
-		#10
+		// #10
 		// TEST FT_TO_FX
-		in_ft = $shortrealtobits(0.25);
+		// in_ft = $shortrealtobits(0.25);
 
 		#10
 
-		in_ft = $shortrealtobits(-0.25);
+		in_ft = $shortrealtobits(0.75);
+		$display($bitstoshortreal(res_ft));
+
+		#10
+
+
+		// in_ft = $shortrealtobits(-0.25);
 		// END FT_TO_FX
 
 		// TEST FX_TO_FT
@@ -70,7 +76,7 @@ module tb ();
 
 		// $display("Input ang: %s%f", in_fx[23] ? "-" : "", in_fx[22:0] / shortreal'(1 << 22));
 
-		// #10
+		#10
 
 		// $display("fx output: %s%f", res_fx[23] ? "-" : "", res_fx[22:0] / shortreal'(1 << 22));
 		// $display("got bytes %b, \nfloat: %f", res_ft, $bitstoshortreal(res_ft));

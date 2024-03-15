@@ -8,7 +8,7 @@ module ft_to_fx
   logic [23:0] number; // mantissa with extra 1 as MSB
   logic [7:0] exponent;
 
-
+  // no need for denorm as such a small number cannot be represented by our fxp
   always_comb begin
     number = {1'b1, x[22:0]}; // add 1 as MSB of mantissa
     no_sign = number >> (1 + 127 - x[30:23]);
