@@ -7,11 +7,11 @@ module fx_to_ft
   logic [22:0] no_sign;
   logic [22:0] mantissa;
   logic [7:0] exponent;
-  
-  int leading_zeros;
+
+  int unsigned leading_zeros;
 
   always_comb begin
-    no_sign = x[23] ? ~x[22:0] + 1 : x[22:0];
+    no_sign = 23'(x[23] ? ~x[22:0] + 1 : x[22:0]);
     leading_zeros = 0;
 
     if (no_sign != 23'b0) begin
@@ -27,7 +27,7 @@ module fx_to_ft
 
     mantissa = no_sign << (leading_zeros + 1); // exclude MSB
 
-    exponent = 127 - leading_zeros;
+    exponent = 8'(127 - leading_zeros);
 
     y = {x[23], exponent, mantissa};
   end

@@ -1,6 +1,6 @@
 module accelerator_top
 (
-	input logic[23:0] x_fx,
+	// input logic[23:0] x_fx,
 	input logic[31:0] x_ft,
 	output logic[23:0] y_fx,
 	output logic[31:0] y_ft

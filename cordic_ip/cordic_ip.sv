@@ -4,7 +4,7 @@ module cordic_ip
 	// input logic clk_en,
 	// input logic rst,
 	input logic[23:0] z,
-	output logic[31:0] cos
+	output logic[23:0] cos
 );
 
 parameter int CORDIC_STAGES = 16;

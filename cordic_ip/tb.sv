@@ -15,7 +15,7 @@ module tb ();
 	logic [23:0] res_fx;
 
 	accelerator_top the_accel(
-		.x_fx(in_fx),
+		// .x_fx(in_fx),
 		.x_ft(in_ft),
 		.y_fx(res_fx),
 		.y_ft(res_ft)
@@ -50,10 +50,11 @@ module tb ();
 		#10
 
 		in_ft = $shortrealtobits(0.75);
-		$display($bitstoshortreal(res_ft));
 
 		#10
 
+		$display("cos(%f) = ", $bitstoshortreal(in_ft));
+		$display($bitstoshortreal(res_ft));
 
 		// in_ft = $shortrealtobits(-0.25);
 		// END FT_TO_FX
