@@ -1,8 +1,9 @@
 module cordic_ip
 (
-	// input logic clk,
-	// input logic clk_en,
-	// input logic rst,
+	input logic clk,
+	input logic clk_en,
+	input logic reset,
+	input logic start,
 	input logic[23:0] z,
 	output logic[23:0] cos
 );
@@ -41,26 +42,43 @@ logic[23:0] x[CORDIC_STAGES];
 logic[23:0] y[CORDIC_STAGES];
 logic[31:0] in_z[CORDIC_STAGES];
 
-always_comb begin
-	in_z[0] = z;
-	x[0] = K_FIXED;
-	y[0] = 0;
+initial begin
+	// in_z[0] = z;
+	// x[0] = K_FIXED;
+	// y[0] = 0;
+end
 
-	for (int i = 0; i < CORDIC_STAGES - 1; i++) begin
-		// $display("%f", in_z[i][23] ? -(-in_z[i] / real'(1 << 22)) : in_z[i] / real'(1 << 22));
-		if (in_z[i][23] == 0) begin // check sign bit
-			in_z[i+1] = in_z[i] - ANGLES_FIXED[i];
-			x[i+1] = x[i] - (y[i] >> i);
-			y[i+1] = y[i] + (x[i] >> i);
+always_ff @ (posedge clk) begin
+	if (reset) begin
+		for (int i = 0; i < CORDIC_STAGES; i++) begin
+			in_z[i] <= 0;
+			x[i] <= 0;
+			y[i] <= 0;
 		end
-		else begin
-			in_z[i+1] = in_z[i] + ANGLES_FIXED[i];
-			x[i+1] = x[i] + (y[i] >> i);
-			y[i+1] = y[i] - (x[i] >> i);
-		end
+
+		in_z[0] <= z;
+		x[0] <= K_FIXED;
 	end
+	else if (clk_en) begin
+		in_z[0] <= z;
+		x[0] <= K_FIXED;
+		y[0] <= 0;
+		for (int i = 0; i < CORDIC_STAGES - 1; i++) begin
+			// $display("%f", in_z[i][23] ? -(-in_z[i] / real'(1 << 22)) : in_z[i] / real'(1 << 22));
+			if (in_z[i][23] == 0) begin // check sign bit
+				in_z[i+1] <= in_z[i] - ANGLES_FIXED[i];
+				x[i+1] <= x[i] - (y[i] >> i);
+				y[i+1] <= y[i] + (x[i] >> i);
+			end
+			else begin
+				in_z[i+1] <= in_z[i] + ANGLES_FIXED[i];
+				x[i+1] <= x[i] + (y[i] >> i);
+				y[i+1] <= y[i] - (x[i] >> i);
+			end
+		end
 
-	cos = x[CORDIC_STAGES - 1]; // get last element
+		cos <= x[CORDIC_STAGES - 1]; // get last element
+	end
 end
 
 endmodule

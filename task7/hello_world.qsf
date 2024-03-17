@@ -111,6 +111,7 @@ set_global_assignment -name SEARCH_PATH /home/youlittleperson/Documents/Imperial
 set_global_assignment -name SEARCH_PATH /home/youlittleperson/Documents/Imperial/Year3/DSD/task6
 set_global_assignment -name SEARCH_PATH /home/diego/documents/dsd/task6_custom_instructions
 set_global_assignment -name SEARCH_PATH /home/diego/documents/dsd/hello_world
+set_global_assignment -name SYSTEMVERILOG_FILE ../cordic_ip/cordic_daisychain.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../cordic_ip/accelerator_top.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../cordic_ip/cordic_ip.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../cordic_ip/ft_to_fx.sv

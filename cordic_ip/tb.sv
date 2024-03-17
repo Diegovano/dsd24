@@ -1,4 +1,4 @@
-`timescale 100 ns / 100 ps
+`timescale 1 us / 100 ps
 module tb ();
 
 	//Inputs to DUT are reg type
@@ -9,16 +9,18 @@ module tb ();
 	logic clk;
 	logic clk_en;
 	logic reset;
+	logic start;
 
 	//Output from DUT is wire type
 	logic [31:0] res_ft;
 	logic [23:0] res_fx;
 
-	accelerator_top the_accel(
+	accelerator_top #(.FOLD_FACT(4), .CORD_ITER(16)) the_accel(
 		.clk(clk),
 		.clk_en(clk_en),
 		.reset(reset),
-		// .x_fx(in_fx),
+		.start(start),
+		.x_fx(in_fx),
 		.x_ft(in_ft),
 		.y_fx(res_fx),
 		.y_ft(res_ft)
@@ -38,8 +40,7 @@ module tb ();
 		// intialise/set input
 		clk = 1'b0;
 		reset = 1'b0;
-		clk_en = 1'b0;
-		#5 
+		clk_en = 1'b1;
 		// If using a clock
 		// @(posedge clk); 
 		
@@ -48,14 +49,17 @@ module tb ();
 		// TEST FT_TO_FX
 		// in_ft = $shortrealtobits(0.25);
 
+		// reset = 1'b0;
+		in_ft = $shortrealtobits(0.01);
+		// in_fx = {1'b0, 1'b0, 2'b11, 20'b0}; // 0.75
+
 		#10
 
-		// reset = 1'b0;
-		in_ft = $shortrealtobits(0.75);
+		start = 1'b1;
 
-		#5
+		#10
 
-		clk_en = 1'b1;
+		start = 1'b0;
 
 		#10
 
