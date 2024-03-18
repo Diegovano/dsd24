@@ -2,7 +2,7 @@ set_global_assignment -entity "first_nios2_system" -library "first_nios2_system"
 set_global_assignment -entity "first_nios2_system" -library "first_nios2_system" -name IP_TOOL_VERSION "20.1"
 set_global_assignment -entity "first_nios2_system" -library "first_nios2_system" -name IP_TOOL_ENV "Qsys"
 set_global_assignment -library "first_nios2_system" -name SOPCINFO_FILE [file join $::quartus(qip_path) "../../first_nios2_system.sopcinfo"]
-set_global_assignment -entity "first_nios2_system" -library "first_nios2_system" -name SLD_INFO "QSYS_NAME first_nios2_system HAS_SOPCINFO 1 GENERATION_ID 1710619232"
+set_global_assignment -entity "first_nios2_system" -library "first_nios2_system" -name SLD_INFO "QSYS_NAME first_nios2_system HAS_SOPCINFO 1 GENERATION_ID 1710726418"
 set_global_assignment -library "first_nios2_system" -name MISC_FILE [file join $::quartus(qip_path) "../first_nios2_system.cmp"]
 set_global_assignment -library "first_nios2_system" -name SLD_FILE [file join $::quartus(qip_path) "first_nios2_system.regmap"]
 set_global_assignment -library "first_nios2_system" -name SLD_FILE [file join $::quartus(qip_path) "first_nios2_system.debuginfo"]
@@ -16,7 +16,7 @@ set_global_assignment -entity "first_nios2_system" -library "first_nios2_system"
 set_global_assignment -entity "first_nios2_system" -library "first_nios2_system" -name IP_COMPONENT_REPORT_HIERARCHY "On"
 set_global_assignment -entity "first_nios2_system" -library "first_nios2_system" -name IP_COMPONENT_INTERNAL "Off"
 set_global_assignment -entity "first_nios2_system" -library "first_nios2_system" -name IP_COMPONENT_VERSION "MS4w"
-set_global_assignment -entity "first_nios2_system" -library "first_nios2_system" -name IP_COMPONENT_PARAMETER "QVVUT19HRU5FUkFUSU9OX0lE::MTcxMDYxOTIzMg==::QXV0byBHRU5FUkFUSU9OX0lE"
+set_global_assignment -entity "first_nios2_system" -library "first_nios2_system" -name IP_COMPONENT_PARAMETER "QVVUT19HRU5FUkFUSU9OX0lE::MTcxMDcyNjQxOA==::QXV0byBHRU5FUkFUSU9OX0lE"
 set_global_assignment -entity "first_nios2_system" -library "first_nios2_system" -name IP_COMPONENT_PARAMETER "QVVUT19ERVZJQ0VfRkFNSUxZ::Q3ljbG9uZSBW::QXV0byBERVZJQ0VfRkFNSUxZ"
 set_global_assignment -entity "first_nios2_system" -library "first_nios2_system" -name IP_COMPONENT_PARAMETER "QVVUT19ERVZJQ0U=::NUNTRU1BNUYzMUM2::QXV0byBERVZJQ0U="
 set_global_assignment -entity "first_nios2_system" -library "first_nios2_system" -name IP_COMPONENT_PARAMETER "QVVUT19ERVZJQ0VfU1BFRURHUkFERQ==::Ng==::QXV0byBERVZJQ0VfU1BFRURHUkFERQ=="
@@ -1334,8 +1334,8 @@ set_global_assignment -entity "accelerator_top" -library "first_nios2_system" -n
 set_global_assignment -entity "accelerator_top" -library "first_nios2_system" -name IP_COMPONENT_DISPLAY_NAME "Y29yZGlj"
 set_global_assignment -entity "accelerator_top" -library "first_nios2_system" -name IP_COMPONENT_REPORT_HIERARCHY "Off"
 set_global_assignment -entity "accelerator_top" -library "first_nios2_system" -name IP_COMPONENT_INTERNAL "Off"
-set_global_assignment -entity "accelerator_top" -library "first_nios2_system" -name IP_COMPONENT_VERSION "MS40"
-set_global_assignment -entity "accelerator_top" -library "first_nios2_system" -name IP_COMPONENT_PARAMETER "Rk9MRF9GQUNU::Mw==::Rk9MRF9GQUNU"
+set_global_assignment -entity "accelerator_top" -library "first_nios2_system" -name IP_COMPONENT_VERSION "MS41"
+set_global_assignment -entity "accelerator_top" -library "first_nios2_system" -name IP_COMPONENT_PARAMETER "Rk9MRF9GQUNU::NA==::Rk9MRF9GQUNU"
 set_global_assignment -entity "accelerator_top" -library "first_nios2_system" -name IP_COMPONENT_PARAMETER "Q09SRF9JVEVS::MTY=::Q09SRF9JVEVS"
 
 set_global_assignment -library "first_nios2_system" -name VERILOG_FILE [file join $::quartus(qip_path) "first_nios2_system.v"]
@@ -1405,10 +1405,6 @@ set_global_assignment -library "first_nios2_system" -name VERILOG_FILE [file joi
 set_global_assignment -library "first_nios2_system" -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "submodules/altera_nios2_gen2_rtl_module.sv"]
 set_global_assignment -library "first_nios2_system" -name SOURCE_FILE [file join $::quartus(qip_path) "submodules/altera_nios2_gen2_rtl_module.ocp"]
 set_global_assignment -library "first_nios2_system" -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "submodules/accelerator_top.sv"]
-set_global_assignment -library "first_nios2_system" -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "submodules/cordic_ip.sv"]
-set_global_assignment -library "first_nios2_system" -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "submodules/ft_to_fx.sv"]
-set_global_assignment -library "first_nios2_system" -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "submodules/fx_to_ft.sv"]
-set_global_assignment -library "first_nios2_system" -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "submodules/cordic_single.sv"]
 
 set_global_assignment -entity "altera_reset_controller" -library "first_nios2_system" -name IP_TOOL_NAME "altera_reset_controller"
 set_global_assignment -entity "altera_reset_controller" -library "first_nios2_system" -name IP_TOOL_VERSION "20.1"

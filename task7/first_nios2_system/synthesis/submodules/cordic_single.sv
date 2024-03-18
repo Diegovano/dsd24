@@ -3,12 +3,12 @@ module cordic_single #(
 )
 (
   input int i,
-	input logic [23:0] z,
-  input logic [23:0] x,
-  input logic [23:0] y,
-  output logic [23:0] out_z,
-	output logic [23:0] out_x,
-  output logic [23:0] out_y
+	input logic signed [23:0] z,
+  input logic signed [23:0] x,
+  input logic signed [23:0] y,
+  output logic signed [23:0] out_z,
+	output logic signed [23:0] out_x,
+  output logic signed [23:0] out_y
 );
 
   parameter logic[23:0] ANGLES_FIXED[16] = '{ // fixed 1 bit sign, 1 bit int, 22 bits frac
@@ -38,13 +38,13 @@ module cordic_single #(
     end
     else if (z[23] == 0) begin // check sign bit
       out_z = z - ANGLES_FIXED[i];
-      out_x = x - (y >> i);
-      out_y = y + (x >> i);
+      out_x = x - (y >>> i);
+      out_y = y + (x >>> i);
     end
     else begin
       out_z = z + ANGLES_FIXED[i];
-      out_x = x + (y >> i);
-      out_y = y - (x >> i);
+      out_x = x + (y >>> i);
+      out_y = y - (x >>> i);
     end
   end
 endmodule

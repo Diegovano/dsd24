@@ -15,15 +15,15 @@ module tb ();
 	logic [31:0] res_ft;
 	logic [23:0] res_fx;
 
-	accelerator_top #(.FOLD_FACT(4), .CORD_ITER(16)) the_accel(
+	accelerator_top #(.FOLD_FACT(16), .CORD_ITER(16)) the_accel(
 		.clk(clk),
 		.clk_en(clk_en),
 		.reset(reset),
 		.start(start),
-		.x_fx(in_fx),
-		.x_ft(in_ft),
-		.y_fx(res_fx),
-		.y_ft(res_ft)
+		// .x_fx(in_fx),
+		.x(in_ft),
+		// .y_fx(res_fx),
+		.y(res_ft)
 	);
 
 	// ---- If a clock is required, see below ----
@@ -39,18 +39,19 @@ module tb ();
 		
 		// intialise/set input
 		clk = 1'b0;
-		reset = 1'b0;
+		reset = 1'b1;
 		clk_en = 1'b1;
 		// If using a clock
 		// @(posedge clk); 
 		
 		// Wait 10 cycles (corresponds to timescale at the top) 
-		// #10
+		#10
+		reset = 0;
 		// TEST FT_TO_FX
 		// in_ft = $shortrealtobits(0.25);
 
 		// reset = 1'b0;
-		in_ft = $shortrealtobits(0.01);
+		in_ft = $shortrealtobits(224.0);
 		// in_fx = {1'b0, 1'b0, 2'b11, 20'b0}; // 0.75
 
 		#10
@@ -63,7 +64,7 @@ module tb ();
 
 		#10
 
-		$display("cos(%f) = ", $bitstoshortreal(in_ft));
+		$display("res y(%f) = ", $bitstoshortreal(in_ft));
 		$display($bitstoshortreal(res_ft));
 
 		// in_ft = $shortrealtobits(-0.25);

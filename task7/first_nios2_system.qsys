@@ -21,7 +21,7 @@
    {
       datum _sortIndex
       {
-         value = "12";
+         value = "9";
          type = "int";
       }
    }
@@ -71,35 +71,6 @@
       {
          value = "Cyclone V";
          type = "String";
-      }
-   }
-   element fp_add
-   {
-      datum _sortIndex
-      {
-         value = "10";
-         type = "int";
-      }
-      datum sopceditor_expanded
-      {
-         value = "1";
-         type = "boolean";
-      }
-   }
-   element fp_mult
-   {
-      datum _sortIndex
-      {
-         value = "9";
-         type = "int";
-      }
-   }
-   element fp_sub
-   {
-      datum _sortIndex
-      {
-         value = "11";
-         type = "int";
       }
    }
    element jtag_uart
@@ -252,9 +223,9 @@
   <parameter name="inputClockFrequency" value="0" />
   <parameter name="resetSynchronousEdges" value="NONE" />
  </module>
- <module name="cordic" kind="cordic" version="1.4" enabled="1">
+ <module name="cordic" kind="cordic" version="1.5" enabled="1">
   <parameter name="CORD_ITER" value="16" />
-  <parameter name="FOLD_FACT" value="3" />
+  <parameter name="FOLD_FACT" value="4" />
  </module>
  <module name="cpu" kind="altera_nios2_gen2" version="20.1" enabled="1">
   <parameter name="AUTO_CLK_CLOCK_DOMAIN" value="1" />
@@ -434,9 +405,6 @@
   <parameter name="tracefilename" value="" />
   <parameter name="userDefinedSettings" value="" />
  </module>
- <module name="fp_add" kind="fp_add" version="1.0" enabled="0" />
- <module name="fp_mult" kind="fp_mult" version="1.2" enabled="0" />
- <module name="fp_sub" kind="fp_sub" version="1.0" enabled="0" />
  <module
    name="jtag_uart"
    kind="altera_avalon_jtag_uart"

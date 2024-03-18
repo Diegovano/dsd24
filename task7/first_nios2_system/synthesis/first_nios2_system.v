@@ -68,10 +68,10 @@ module first_nios2_system (
 	wire  [31:0] cpu_custom_instruction_master_multi_xconnect_ci_master0_dataa;          // cpu_custom_instruction_master_multi_xconnect:ci_master0_dataa -> cpu_custom_instruction_master_multi_slave_translator0:ci_slave_dataa
 	wire         cpu_custom_instruction_master_multi_xconnect_ci_master0_reset;          // cpu_custom_instruction_master_multi_xconnect:ci_master0_reset -> cpu_custom_instruction_master_multi_slave_translator0:ci_slave_reset
 	wire         cpu_custom_instruction_master_multi_xconnect_ci_master0_writerc;        // cpu_custom_instruction_master_multi_xconnect:ci_master0_writerc -> cpu_custom_instruction_master_multi_slave_translator0:ci_slave_writerc
-	wire  [31:0] cpu_custom_instruction_master_multi_slave_translator0_ci_master_result; // cordic:y_ft -> cpu_custom_instruction_master_multi_slave_translator0:ci_master_result
+	wire  [31:0] cpu_custom_instruction_master_multi_slave_translator0_ci_master_result; // cordic:y -> cpu_custom_instruction_master_multi_slave_translator0:ci_master_result
 	wire         cpu_custom_instruction_master_multi_slave_translator0_ci_master_clk;    // cpu_custom_instruction_master_multi_slave_translator0:ci_master_clk -> cordic:clk
 	wire         cpu_custom_instruction_master_multi_slave_translator0_ci_master_clk_en; // cpu_custom_instruction_master_multi_slave_translator0:ci_master_clken -> cordic:clk_en
-	wire  [31:0] cpu_custom_instruction_master_multi_slave_translator0_ci_master_dataa;  // cpu_custom_instruction_master_multi_slave_translator0:ci_master_dataa -> cordic:x_ft
+	wire  [31:0] cpu_custom_instruction_master_multi_slave_translator0_ci_master_dataa;  // cpu_custom_instruction_master_multi_slave_translator0:ci_master_dataa -> cordic:x
 	wire         cpu_custom_instruction_master_multi_slave_translator0_ci_master_start;  // cpu_custom_instruction_master_multi_slave_translator0:ci_master_start -> cordic:start
 	wire         cpu_custom_instruction_master_multi_slave_translator0_ci_master_reset;  // cpu_custom_instruction_master_multi_slave_translator0:ci_master_reset -> cordic:reset
 	wire         cpu_custom_instruction_master_multi_slave_translator0_ci_master_done;   // cordic:done -> cpu_custom_instruction_master_multi_slave_translator0:ci_master_done
@@ -132,16 +132,16 @@ module first_nios2_system (
 	wire         rst_controller_reset_out_reset_req;                                     // rst_controller:reset_req -> [cpu:reset_req, rst_translator:reset_req_in]
 
 	accelerator_top #(
-		.FOLD_FACT (3),
+		.FOLD_FACT (4),
 		.CORD_ITER (16)
 	) cordic (
 		.clk_en (cpu_custom_instruction_master_multi_slave_translator0_ci_master_clk_en), // nios_custom_instruction_slave.clk_en
 		.start  (cpu_custom_instruction_master_multi_slave_translator0_ci_master_start),  //                              .start
-		.x_ft   (cpu_custom_instruction_master_multi_slave_translator0_ci_master_dataa),  //                              .dataa
 		.done   (cpu_custom_instruction_master_multi_slave_translator0_ci_master_done),   //                              .done
-		.y_ft   (cpu_custom_instruction_master_multi_slave_translator0_ci_master_result), //                              .result
 		.clk    (cpu_custom_instruction_master_multi_slave_translator0_ci_master_clk),    //                              .clk
-		.reset  (cpu_custom_instruction_master_multi_slave_translator0_ci_master_reset)   //                              .reset
+		.reset  (cpu_custom_instruction_master_multi_slave_translator0_ci_master_reset),  //                              .reset
+		.x      (cpu_custom_instruction_master_multi_slave_translator0_ci_master_dataa),  //                              .dataa
+		.y      (cpu_custom_instruction_master_multi_slave_translator0_ci_master_result)  //                              .result
 	);
 
 	first_nios2_system_cpu cpu (

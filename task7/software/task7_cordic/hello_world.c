@@ -8,10 +8,10 @@
 
 int main()
 {
-  float in = -0.5;
+  float in = 244;
   float out = ALT_CI_CORDIC_0(in);
-  printf("gd cos(%f) = %f\n", in, cos(in));
-  printf("my cos(%f) = %f\n", in, out);
+  printf("true y(%f) = %f\n", in, 0.5 * in + in * in  * cos((in-128)/128));
+  printf("my y(%f) = %f\n", in, out);
 
   return 0;
 }

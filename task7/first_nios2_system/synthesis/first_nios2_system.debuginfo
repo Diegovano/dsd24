@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EnsembleReport name="first_nios2_system" kind="system" version="20.1" fabric="QSYS">
  <!-- Format version 20.1 720 (Future versions may contain additional information.) -->
- <!-- 2024.03.16.20:00:37 -->
+ <!-- 2024.03.18.01:47:03 -->
  <!-- A collection of modules and connections -->
  <parameter name="clockCrossingAdapter">
   <type>com.altera.sopcmodel.ensemble.EClockAdapter</type>
@@ -53,7 +53,7 @@
  </parameter>
  <parameter name="generationId">
   <type>int</type>
-  <value>1710619232</value>
+  <value>1710726418</value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>true</visible>
@@ -505,12 +505,12 @@ parameters are a RESULT of the module parameters. -->
    </port>
   </interface>
  </module>
- <module name="cordic" kind="cordic" version="1.4" path="cordic">
+ <module name="cordic" kind="cordic" version="1.5" path="cordic">
   <!-- Describes a single module. Module parameters are
 the requested settings for a module instance. -->
   <parameter name="FOLD_FACT">
    <type>int</type>
-   <value>3</value>
+   <value>4</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -642,22 +642,10 @@ parameters are a RESULT of the module parameters. -->
     <role>start</role>
    </port>
    <port>
-    <name>x_ft</name>
-    <direction>Input</direction>
-    <width>32</width>
-    <role>dataa</role>
-   </port>
-   <port>
     <name>done</name>
     <direction>Output</direction>
     <width>1</width>
     <role>done</role>
-   </port>
-   <port>
-    <name>y_ft</name>
-    <direction>Output</direction>
-    <width>32</width>
-    <role>result</role>
    </port>
    <port>
     <name>clk</name>
@@ -670,6 +658,18 @@ parameters are a RESULT of the module parameters. -->
     <direction>Input</direction>
     <width>1</width>
     <role>reset</role>
+   </port>
+   <port>
+    <name>x</name>
+    <direction>Input</direction>
+    <width>32</width>
+    <role>dataa</role>
+   </port>
+   <port>
+    <name>y</name>
+    <direction>Output</direction>
+    <width>32</width>
+    <role>result</role>
    </port>
   </interface>
  </module>
@@ -7236,7 +7236,7 @@ the requested settings for a module instance. -->
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.TIMESTAMP</name>
-   <value>1710619232</value>
+   <value>1710726418</value>
   </assignment>
   <assignment>
    <name>embeddedsw.dts.compatible</name>
@@ -7256,7 +7256,7 @@ the requested settings for a module instance. -->
   </assignment>
   <assignment>
    <name>embeddedsw.dts.params.timestamp</name>
-   <value>1710619232</value>
+   <value>1710726418</value>
   </assignment>
   <assignment>
    <name>embeddedsw.dts.vendor</name>
@@ -7272,7 +7272,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="timestamp">
    <type>int</type>
-   <value>1710619232</value>
+   <value>1710726418</value>
    <derived>true</derived>
    <enabled>false</enabled>
    <visible>false</visible>
@@ -14623,7 +14623,7 @@ parameters are a RESULT of the module parameters. -->
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IModule</subtype>
   <displayName>cordic</displayName>
-  <version>1.4</version>
+  <version>1.5</version>
  </plugin>
  <plugin>
   <instanceCount>4</instanceCount>
@@ -14858,5 +14858,5 @@ parameters are a RESULT of the module parameters. -->
   <version>20.1</version>
  </plugin>
  <reportVersion>20.1 720</reportVersion>
- <uniqueIdentifier>201E88D296500000018E48DA0C74</uniqueIdentifier>
+ <uniqueIdentifier>201E88D296500000018E4F3D93C4</uniqueIdentifier>
 </EnsembleReport>

@@ -7,105 +7,166 @@ module accelerator_top #(
 	input logic clk_en,
 	input logic reset,
 	input logic start,
-	input logic[23:0] x_fx,
-	input logic[31:0] x_ft,
+	input logic[31:0] x,
 	output logic done,
-	output logic[23:0] y_fx,
-	output logic[31:0] y_ft
+	output logic[31:0] y
 );
 
-logic [23:0] cos_in;
-logic [23:0] cos_res;
-logic [31:0] cur_flt;
+typedef enum logic [2:0] {
+	IDLE_STATE,
+	MULTIPLY_STATE_1, // includes cordic
+	MULTIPLY_STATE_2, // x^2 * cos
+	ACCUMULATE_STATE,
+	OUTPUT_AVAIL_STATE
+} state_t;
 
-logic [23:0] x;
-logic [23:0] y;
-logic [23:0] z;
+logic start_cordic;
+logic done_cordic;
 
-logic [23:0] out_x;
-logic [23:0] out_y;
-logic [23:0] out_z;
+logic [31:0] x_squared;
+logic [31:0] x_half;
+logic [31:0] x_cos_out;
+logic [31:0] x_cos;
+logic [31:0] x_squared_cos;
 
-logic [23:0] fixed;
-// logic [23:0] out_y1;
-// logic [23:0] out_z1;
+logic [31:0] mul_dataa_1;
+logic [31:0] mul_datab_1;
+logic [31:0] mul_res_1;
+
+logic [31:0] mul_dataa_2;
+logic [31:0] mul_datab_2;
+logic [31:0] mul_res_2;
+
+logic [31:0] add_dataa_1;
+logic [31:0] add_datab_1;
+logic [31:0] add_res_1;
+
+state_t state, next_state;
+
+fp_mult mult_1 (
+	.clk(clk),
+	.a(mul_dataa_1),
+	.b(mul_datab_1),
+	.q(mul_res_1)
+);
+
+fp_mult mult_2 (
+	.clk(clk),
+	.a(mul_dataa_2),
+	.b(mul_datab_2),
+	.q(mul_res_2)
+);
+
+fp_add add_1 (
+	.clk(clk),
+	.a(add_dataa_1),
+	.b(add_datab_1),
+	.q(add_res_1)
+);
+
+cordic_top #(.FOLD_FACT(FOLD_FACT), .CORD_ITER(CORD_ITER)) my_cordic (
+	.clk(clk),
+	.clk_en(clk_en),
+	.reset(reset),
+	.start(start_cordic),
+	.done(done_cordic),
+	.x_ft(x),
+	.y_ft(x_cos_out)
+);
 
 int count;
-
-ft_to_fx to_fixed(
-	.x(x_ft),
-	.y(fixed)
-);
-
-cordic_daisychain #(.NUMBER_CHAINED(FOLD_FACT), .CORD_ITER(CORD_ITER)) c0(
-	.shift(count),
-	.z0(z),
-	.x0(x),
-	.y0(y),
-	.zf(out_z),
-	.xf(out_x),
-	.yf(out_y)
-);
-
-// cordic_single s0(
-// 	.i(count),
-// 	.z(z),
-// 	.x(x),
-// 	.y(y),
-// 	.out_z(out_z0),
-// 	.out_x(out_x0),
-// 	.out_y(out_y0)
-// );
-
-// cordic_single s1(
-// 	.i(count+1),
-// 	.z(out_z0),
-// 	.x(out_x0),
-// 	.y(out_y0),
-// 	.out_z(out_z1),
-// 	.out_x(out_x1),
-// 	.out_y(out_y1)
-// );
-
-// cordic_ip cosine_accel(
-// 	.clk(clk),
-// 	.clk_en(clk_en),
-// 	.reset(reset),
-// 	.z(cos_in),
-// 	.cos(cos_res)
-// );
-
-fx_to_ft to_float(
-	.x(x),
-	.y(cur_flt)
-);
-
-always_comb begin
-
-	// else y_ft = 0;
-	// if (count >= CORD_ITER) y_fx = x;
+always_ff @ (posedge clk) begin
+	if (clk_en) begin 
+		state = next_state;
+		if (reset) state = IDLE_STATE;
+	end
 end
 
-always_ff @ (posedge clk) begin
+always_comb begin
 	if (clk_en) begin
-		y_ft <= cur_flt;
-		done <= count >= CORD_ITER ? 1 : 0;
-
-
-		if (start) begin
-			count = 0;
-			// z <= x_fx ? x_fx : cos_in;
-			z <= cos_in;
-			x <= 24'h26DD3B;
-			y <= 0;
+		if (reset) begin
+			start_cordic <= 0;
+			done <= 0;
+			count <= 0;
 		end
+		else begin
+			// state = next_state;
+			case (state)
+				default: begin // covers idle state
+				// IDLE_STATE: begin
+					count <= 0;
+					done <= 0;
+					$display(state);
+					if (start) begin
+						$display("start");
+						next_state <= MULTIPLY_STATE_1;
 
-		else if (count < CORD_ITER) begin
-			z <= out_z;
-			x <= out_x;
-			y <= out_y;
-			count <= count + FOLD_FACT;
+						start_cordic <= 1;
+					end
+					else begin
+						$display("nostart");
+						next_state <= IDLE_STATE;
 
+						start_cordic <= 0;
+					end
+				end
+
+				MULTIPLY_STATE_1: begin
+					count++;
+					start_cordic <= 0;
+
+					mul_dataa_1 <= 31'h3F000000;
+					mul_datab_1 <= x;
+
+					mul_dataa_2 <= x;
+					mul_datab_2 <= x;
+
+					x_half <= mul_res_1;
+					x_squared <= mul_res_2;
+					x_cos <= x_cos_out;
+
+					if (done_cordic && count >= 2) begin
+						next_state = MULTIPLY_STATE_2; // if mults finished and cordic finished
+						count <= 0;
+					end
+					else next_state = MULTIPLY_STATE_1;
+				end
+
+				MULTIPLY_STATE_2: begin
+					count++;
+
+					mul_dataa_1 <= x_squared;
+					mul_datab_1 <= x_cos;
+
+					x_squared_cos <= mul_res_1;
+
+					if (count >= 2) begin
+						next_state <= ACCUMULATE_STATE;
+						count <= 0;
+					end
+					else next_state <= MULTIPLY_STATE_2;
+				end
+
+				ACCUMULATE_STATE: begin
+					count++;
+
+					add_dataa_1 <= x_squared_cos;
+					add_datab_1 <= x_half;
+
+					y <= add_res_1;
+
+					if (count >= 2) begin
+						next_state <= OUTPUT_AVAIL_STATE;
+						count <= 0;
+					end
+					else next_state <= ACCUMULATE_STATE;
+				end
+
+				OUTPUT_AVAIL_STATE: begin
+					next_state <= IDLE_STATE;
+					done <= 1;
+				end
+			endcase
 		end
 	end
 end
