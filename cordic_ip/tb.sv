@@ -15,7 +15,7 @@ module tb ();
 	logic [31:0] res_ft;
 	logic [23:0] res_fx;
 
-	accelerator_top #(.FOLD_FACT(16), .CORD_ITER(16)) the_accel(
+	accelerator_top #(.FOLD_FACT(4), .CORD_ITER(16)) the_accel(
 		.clk(clk),
 		.clk_en(clk_en),
 		.reset(reset),

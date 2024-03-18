@@ -35,10 +35,6 @@ logic [31:0] mul_dataa_1;
 logic [31:0] mul_datab_1;
 logic [31:0] mul_res_1;
 
-logic [31:0] mul_dataa_2;
-logic [31:0] mul_datab_2;
-logic [31:0] mul_res_2;
-
 logic [31:0] add_dataa_1;
 logic [31:0] add_datab_1;
 logic [31:0] add_res_1;
@@ -53,19 +49,13 @@ fp_mult mult_1 (
 	.q(mul_res_1)
 );
 
-fp_mult mult_2 (
-	.clk(clk),
-	.areset(reset),
-	.a(mul_dataa_2),
-	.b(mul_datab_2),
-	.q(mul_res_2)
-);
-
 fp_add add_1 (
 	.clk(clk),
 	.areset(reset),
-	.a(add_dataa_1),
-	.b(add_datab_1),
+	// .a(add_dataa_1),
+	.a(mul_res_1),
+	// .b(add_datab_1),
+	.b(x_half),
 	.q(add_res_1)
 );
 
@@ -101,20 +91,17 @@ always_comb begin
 	start_cordic = 0;
 	done = 0;
 
-	mul_dataa_1 = 0;
-	mul_datab_1 = 0;
+	// mul_dataa_1 = 0;
+	// mul_datab_1 = 0;
 
-	mul_dataa_2 = 0;
-	mul_datab_2 = 0;
+	// add_dataa_1 = 0;
+	// add_datab_1 = 0;
 
-	add_dataa_1 = 0;
-	add_datab_1 = 0;
-
-	next_x_squared = 0;
-	next_x_half = 0;
-	next_x_cos = 0;
-	next_x_squared_cos = 0;
-	next_acc_res = 0;
+	// next_x_squared = 0;
+	// next_x_half = 0;
+	// next_x_cos = 0;
+	// next_x_squared_cos = 0;
+	// next_acc_res = 0;
 
 	y = 0;
 
@@ -123,29 +110,25 @@ always_comb begin
 	case (state)
 		default: begin // covers idle state
 		// IDLE_STATE: begin
+			start_cordic = 1;
 			if (start) begin
 				next_state = MULTIPLY_STATE_1;
-
-				start_cordic = 1;
 			end
 			else begin
 				next_state = IDLE_STATE;
-
-				start_cordic = 0;
 			end
 		end
 
 		MULTIPLY_STATE_1: begin
 			start_cordic = 0;
 
-			mul_dataa_1 = 31'h3F000000;
+			mul_dataa_1 = x;
 			mul_datab_1 = x;
 
-			mul_dataa_2 = x;
-			mul_datab_2 = x;
+			if (x[30:23] == 8'b0) next_x_half = {x[31:23], x[22:0] >> 1};
+			else next_x_half = {x[31], x[30:23] - 1, x[22:0]};
 
-			next_x_half = mul_res_1;
-			next_x_squared = mul_res_2;
+			next_x_squared = mul_res_1;
 			next_x_cos = x_cos_out;
 
 			if (done_cordic && count >= 2) begin
@@ -158,10 +141,11 @@ always_comb begin
 			mul_dataa_1 = x_squared;
 			mul_datab_1 = x_cos;
 
-			next_x_squared_cos = mul_res_1;
-			next_x_half = x_half;
+			// next_x_squared_cos = mul_res_1;
+			// next_x_half = x_half;
 
-			if (count >= 2) begin
+			// if (count >= 2 - 1) begin
+			if (count >= 2 - 1) begin
 				next_state = ACCUMULATE_STATE;
 			end
 			else next_state = MULTIPLY_STATE_2;
@@ -173,7 +157,8 @@ always_comb begin
 
 			next_acc_res = add_res_1;
 
-			if (count >= 2) begin
+			// if (count >= 2 - 1) begin // prepare data for immediate release next cycle
+			if (count >= 2 - 1) begin // prepare data for immediate release next cycle
 				next_state = OUTPUT_AVAIL_STATE;
 			end
 			else next_state = ACCUMULATE_STATE;
@@ -183,7 +168,7 @@ always_comb begin
 			next_state = IDLE_STATE;
 			done = 1;
 
-			y = acc_res;
+			y = add_res_1;
 
 		end
 	endcase

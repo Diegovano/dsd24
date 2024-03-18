@@ -51,16 +51,17 @@ fx_to_ft to_float(
 	.y(cur_flt)
 );
 
+always_comb begin
+		y_ft <= cur_flt;
+		// done <= count >= CORD_ITER - 1 ? 1 : 0;
+		done <= count >= CORD_ITER - 1 ? 1 : 0;
+end
+
 always_ff @ (posedge clk) begin
 	if (clk_en) begin
-		y_ft <= cur_flt;
-		done <= count >= CORD_ITER ? 1 : 0;
-
-
 		if (start) begin
 			count <= 0;
-			done <= 0;
-			// z <= x_fx ? x_fx : cos_in;
+
 			z <= fixed;
 			x <= 24'h26DD3B;
 			y <= 0;
@@ -71,11 +72,7 @@ always_ff @ (posedge clk) begin
 			x <= out_x;
 			y <= out_y;
 			count <= count + FOLD_FACT;
-
 		end
-	end
-	else begin
-		done = 0;
 	end
 end
 
