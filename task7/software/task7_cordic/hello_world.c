@@ -97,14 +97,18 @@ int main(int argc, char* argv[])
 
   // const int numIterations = 1 << TEST_REPEAT;
 
+  volatile float temp;
+
   exec_t1 = times(NULL);
 
-  int y1 = 0;
+  // int y1 = 0;
 
-  for (int i = 0; i < numIterations; i++) {
-    y = theFunction(x, N);
-  }
-  
+  // for (int i = 0; i < numIterations; i++) {
+  //   y = theFunction(x, N);
+  // }
+
+  for (unsigned int i = 0; i < 1000; i++) temp = cos(0.75);
+
   // till here
   exec_t2 = times(NULL);
 
